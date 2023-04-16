@@ -1,6 +1,5 @@
 #include <SoftwareSerial.h>
 #include <TinyGPS++.h>
-68
 #include <ESP8266WiFi.h>
 #include <FirebaseArduino.h>
 #define FIREBASE_HOST "https://androidapp1-e8e82-default-rtdb.firebaseio.com/"
