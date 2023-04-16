@@ -1,0 +1,40 @@
+#include &lt;ESP8266WiFi.h&gt;
+
+49
+
+#include &lt;SoftwareSerial.h&gt;
+#include &lt;FirebaseArduino.h&gt;
+#include &lt;ArduinoJson.h&gt;
+#include &lt;ESP8266HTTPClient.h&gt;
+#define FIREBASE_HOST &quot;https://androidapp1-e8e82-default-rtdb.firebaseio.com/&quot;
+#define FIREBASE_AUTH &quot;VCTS0fuqzbkoPHKrhg3z0l2a2YDKaXkYd43gOQ8s&quot;
+#define WIFI_SSID &quot;JioFi3_5E8D41&quot;
+#define WIFI_PASSWORD &quot;njz1nrzt7h&quot;
+int sensor=A0;
+void setup() {
+Serial.begin(9600);
+WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+Serial.print(&quot;connecting&quot;);
+while (WiFi.status() != WL_CONNECTED)
+{
+delay(500);
+}
+Serial.println(&quot;connected: &quot;);
+Serial.println(WiFi.localIP());
+Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+if(Firebase.failed())
+{
+Serial.print(Firebase.error());
+}
+else{
+Serial.print(&quot;Firebase Connected&quot;);
+Firebase.setInt(&quot;pulse/heartrate&quot;,0);
+
+49
+
+}
+}
+void loop() {
+int myBPM =analogRead(sensor);
+Firebase.setInt(&quot;pulse/heartrate&quot;,myBPM);
+delay(90);}
