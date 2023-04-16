@@ -1,0 +1,24 @@
+#include <SoftwareSerial.h>
+const int BUTTON_1 = 16;
+int BUTTONstate = 0;
+void setup() {
+ Serial.begin(9600);
+ pinMode(BUTTON_1,INPUT); }
+void loop() {
+BUTTONstate = digitalRead(BUTTON_1);
+if(BUTTONstate == HIGH)
+ 
+{
+ Serial.println("AT+CMGF=1");
+ delay(1000); 
+ Serial.println("AT+CMGS=\"+919360251563\"\r");
+ delay(1000);
+ Serial.println("Emergency alert");
+ Serial.println("Blind is in emergency")
+;
+ delay(100);
+ Serial.println((char)26);
+ delay(1000); 
+ 
+}
+}
