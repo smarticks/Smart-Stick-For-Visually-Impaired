@@ -1,0 +1,42 @@
+#include <SoftwareSerial.h>
+#include <TinyGPS++.h>
+68
+#include <ESP8266WiFi.h>
+#include <FirebaseArduino.h>
+#define FIREBASE_HOST "https://androidapp1-e8e82-default-rtdb.firebaseio.com/"
+#define FIREBASE_AUTH "gUHGCU8Ov2H06waIykaK1UP38qsvA0mgKhkNmD8n"
+#define WIFI_SSID "Desktop-JK"
+#define WIFI_PASSWORD "90899920"
+static const int RXPin = 4, TXPin = 5; 
+static const uint32_t GPSBaud = 9600;
+SoftwareSerial ss(RXPin, TXPin);
+TinyGPSPlus gps;
+void setup()
+{
+ Serial.begin(9600);
+ ss.begin(GPSBaud);
+ WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+ Serial.print("Connecting to Wi-Fi");
+ while (WiFi.status() != WL_CONNECTED) {
+ delay(500);
+ Serial.print(".");
+ }
+ Serial.println();
+ Serial.print("Connected to Wi-Fi with IP: ");
+ Serial.println(WiFi.localIP());
+ Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+}
+void loop()
+{
+while (ss.available() > 0)
+ {
+ if (gps.encode(ss.read()))
+ {
+ if (gps.location.isUpdated())
+ {
+ Firebase.setString("gps/lat",String( gps.location.lat()));
+ Firebase.setString("gps/long",String( gps.location.lng()));
+ }
+ }
+ }
+}
