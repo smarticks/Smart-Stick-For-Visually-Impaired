@@ -1,0 +1,54 @@
+import RPi.GPIO as GPIO
+import time
+import pyttsx3
+engine = pyttsx3.init()
+GPIO.setmode(GPIO.BCM)
+TRIG = 23
+ECHO = 24
+TRIG1 = 19
+ECHO1 = 26
+while 1:
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(TRIG,GPIO.OUT)
+GPIO.setup(ECHO,GPIO.IN)
+GPIO.setup(TRIG1,GPIO.OUT)
+GPIO.setup(ECHO1,GPIO.IN)
+time.sleep(0.5)
+GPIO.output(TRIG, True)
+time.sleep(0.00001)
+GPIO.output(TRIG, False)
+
+49
+
+while GPIO.input(ECHO)==0:
+pulse_start = time.time()
+while GPIO.input(ECHO)==1:
+pulse_end = time.time()
+pulse_duration = pulse_end - pulse_start
+distance = pulse_duration * 17150
+distance = round(distance, 2)
+print (&quot;Ultrasonic_1:&quot;,distance,&quot;cm&quot;)
+time.sleep(0.5)
+GPIO.output(TRIG1, True)
+time.sleep(0.00001)
+GPIO.output(TRIG1, False)
+while GPIO.input(ECHO1)==0:
+pulse_start1 = time.time()
+while GPIO.input(ECHO1)==1:
+pulse_end1 = time.time()
+pulse_duration1 = pulse_end1 - pulse_start1
+distance1 = pulse_duration1 * 17150
+distance1 = round(distance1, 2)
+print (&quot;Ultrasonic_2:&quot;,distance1,&quot;cm&quot;)
+time.sleep(0.5)
+if distance &gt; distance1:
+engine.say(&quot;Go Left&quot;)
+engine.runAndWait()
+time.sleep(0.5)
+else:
+engine.say(&quot;Go Right&quot;)
+
+49
+
+engine.runAndWait()
+time.sleep(0.5)
