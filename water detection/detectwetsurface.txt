@@ -1,0 +1,11 @@
+from time import sleep
+from gpiozero import InputDevice
+import pyttsx3
+engine = pyttsx3.init()
+no_wet=InputDevice(18)
+while True:
+if not no_wet.is_active:
+print(&quot;Wet surface detected&quot;)
+engine.say(&quot;Wet Surface Detected&quot;)
+engine.runAndWait()
+sleep(1)
